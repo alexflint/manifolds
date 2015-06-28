@@ -1,6 +1,6 @@
 import numpy as np
 
-from atlas import atlas_for
+from .atlas import atlas_for
 
 
 def numeric_jacobian_colwise(f, x, atlas=None, output_atlas=None, h=1e-8):
@@ -13,7 +13,7 @@ def numeric_jacobian_colwise(f, x, atlas=None, output_atlas=None, h=1e-8):
     y = f(x)
 
     input_atlas = atlas_for(x, atlas)
-    output_atlas = atlas_for(y, output_atlas)
+    output_atlas =  atlas_for(y, output_atlas)
 
     xdof = input_atlas.dof(x)
     ydof = output_atlas.dof(y)
