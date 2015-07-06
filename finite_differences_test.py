@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
-from numpy.testing import assert_array_almost_equal
+from numericaltesting import assert_arrays_almost_equal
 
-from finite_differences import numeric_jacobian, numeric_jacobian_colwise
+from .finite_differences import numeric_jacobian, numeric_jacobian_colwise
 
 
 class Foo(object):
@@ -26,31 +26,31 @@ class Foo(object):
 class FiniteDifferencesTest(unittest.TestCase):
 	def test_numeric_jacobian_scalar(self):
 		f = lambda x: x**2
-		assert_array_almost_equal(numeric_jacobian(f, 3.), [[6.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, 3.), [[6.]])
 
 	def test_numeric_jacobian_vector_output(self):
 		f = lambda x: np.array([x**2, 3.-x])
-		assert_array_almost_equal(numeric_jacobian(f, 3.), [[6.], [-1.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, 3.), [[6.], [-1.]])
 
 	def test_numeric_jacobian_vector_input(self):
 		f = lambda x: x[0] * 2.
-		assert_array_almost_equal(numeric_jacobian(f, [3., 4.]), [[2., 0.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, [3., 4.]), [[2., 0.]])
 
 	def test_numeric_jacobian_vector_inout(self):
 		f = lambda x: np.array((x[0] * 2., x[1]**2))
-		assert_array_almost_equal(numeric_jacobian(f, [3., 4.]), [[2., 0.], [0., 8.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, [3., 4.]), [[2., 0.], [0., 8.]])
 
 	def test_numeric_jacobian_custom_input(self):
 		f = lambda f: f.x ** 2
-		assert_array_almost_equal(numeric_jacobian(f, Foo(3.)), [[6.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, Foo(3.)), [[6.]])
 
 	def test_numeric_jacobian_custom_output(self):
 		f = lambda x: Foo(x ** 2)
-		assert_array_almost_equal(numeric_jacobian(f, 3.), [[6.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, 3.), [[6.]])
 
 	def test_numeric_jacobian_custom_inou(self):
 		f = lambda f: Foo(f.x ** 2)
-		assert_array_almost_equal(numeric_jacobian(f, Foo(3.)), [[6.]])
+		assert_arrays_almost_equal(numeric_jacobian(f, Foo(3.)), [[6.]])
 
 
 if __name__ == '__main__':
